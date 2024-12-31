@@ -1,0 +1,7 @@
+window.globalConfig = {
+  idmPath: "https://idm.t-mobile.pl/openid/auth",
+  sessionNotificationThreshold: 1740, // 29 * 60 sec = 1740 sec = 29 min
+  sessionTimeout: 1800, // 30 * 60 sec = 1800 sec = 30 min
+  gtmId: "GTM-PJJXXBQ",
+  formId: "12332",
+};

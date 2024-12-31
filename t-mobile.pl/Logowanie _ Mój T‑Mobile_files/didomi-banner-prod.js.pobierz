@@ -1,0 +1,109 @@
+(window.gdprAppliesGlobally = !0),
+	(function () {
+		var e, t;
+		(function e(t, a, r, n, i) {
+			function s(e, t, r, n) {
+				if ('function' == typeof r) {
+					window[a] || (window[a] = []);
+					var s = !1;
+					i && (s = i(e, t, r)),
+						s || window[a].push({ command: e, parameter: t, callback: r, version: n });
+				}
+			}
+			function c(e) {
+				if (window[t] && !0 === window[t].stub && e.data) {
+					var a,
+						i = 'string' == typeof e.data;
+					try {
+						a = i ? JSON.parse(e.data) : e.data;
+					} catch (s) {
+						return;
+					}
+					if (a[r]) {
+						var c = a[r];
+						window[t](
+							c.command,
+							c.parameter,
+							function (t, a) {
+								var r = {};
+								(r[n] = { returnValue: t, success: a, callId: c.callId }),
+									e.source.postMessage(i ? JSON.stringify(r) : r, '*');
+							},
+							c.version
+						);
+					}
+				}
+			}
+			(s.stub = !0),
+				'function' != typeof window[t] &&
+					((window[t] = s),
+					window.addEventListener
+						? window.addEventListener('message', c, !1)
+						: window.attachEvent('onmessage', c));
+		})('__tcfapi', '__tcfapiBuffer', '__tcfapiCall', '__tcfapiReturn'),
+			(function e(t) {
+				if (!window.frames[t]) {
+					if (document.body && document.body.firstChild) {
+						var a = document.body,
+							r = document.createElement('iframe');
+						(r.style.display = 'none'),
+							(r.name = t),
+							(r.title = t),
+							a.insertBefore(r, a.firstChild);
+					} else
+						setTimeout(function () {
+							e(t);
+						}, 5);
+				}
+			})('__tcfapiLocator'),
+			((e = document.createElement('script')).id = 'spcloader'),
+			(e.type = 'text/javascript'),
+			(e.async = !0),
+			(e.src =
+				'https://sdk.privacy-center.org/a7606659-d884-4922-b8e9-091feb416e6e/loader.js?target_type=notice&target=gQnkZqEw'),
+			(e.charset = 'utf-8'),
+			(t = document.getElementsByTagName('script')[0]).parentNode.insertBefore(e, t);
+	})();
+{
+	/*End of Didomi Script - start didomi black page interaction block*/
+}
+const params = new URLSearchParams(location.search);
+let isDidomiEnabled = params.get('didomiConfig.notice.enable');
+if ('false' !== isDidomiEnabled) {
+	window.didomiEventListeners = window.didomiEventListeners || [];
+	let e = 'didomi-notification-open',
+		i = document.createElement('div');
+	i.id = 'didomiBlockNavigation';
+	let t = function (e) {
+			let i = e.querySelectorAll('a[href], button:not([disabled])'),
+				t = i[0],
+				n = i[i.length - 1];
+			e.addEventListener('keydown', function (e) {
+				('Tab' === e.key || 9 === e.keyCode) &&
+					(e.shiftKey
+						? document.activeElement === t && (n.focus(), e.preventDefault())
+						: document.activeElement === n && (t.focus(), e.preventDefault()));
+			});
+		},
+		n = function () {
+			document.body.classList.add(e), document.body.appendChild(i);
+			let n = document.querySelector('.didomi-notice__interior-border.didomi-border');
+			n && t(n);
+		};
+	window.didomiEventListeners.push({
+		event: 'notice.shown',
+		listener: function () {
+			n();
+		},
+	});
+	let d = document.getElementById('didomi-host');
+	d && !0 !== d.ariaHidden && !document.body.classList.contains(e) && n(),
+		window.didomiEventListeners.push({
+			event: 'notice.hidden',
+			listener: function () {
+				document.body.classList.remove(e);
+				let t = document.getElementById(i.id);
+				t && t.remove();
+			},
+		});
+}
